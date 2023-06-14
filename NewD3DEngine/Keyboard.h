@@ -1,7 +1,5 @@
 #pragma once
 
-#include "Window.h"
-
 #include <bitset>
 #include <queue>
 
@@ -69,9 +67,11 @@ public:
 
 public:
 	Keyboard() = default;
+	
 	Keyboard(const Keyboard&) = delete;
 	Keyboard& operator=(const Keyboard&) = delete;
 
+	//目前有的API 能力，查询是否按键，消息在Window里面绑定
 	//EVENT
 	bool IsKeyPressed(unsigned char keycode)const noexcept;
 	Event ReadKey()noexcept;

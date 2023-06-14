@@ -18,6 +18,11 @@ int CALLBACK WinMain(
 			// TranslateMessage will post auxilliary WM_CHAR messages from key msgs
 			TranslateMessage(&msg);
 			DispatchMessage(&msg);
+
+			if (wnd.kbd.IsKeyPressed(VK_MENU))
+			{
+				MessageBox(nullptr, "Something Happon", "Sapce Key is Pressed", MB_OK | MB_ICONEXCLAMATION);
+			}
 		}
 
 		if (gResult == -1)

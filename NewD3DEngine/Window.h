@@ -2,6 +2,8 @@
 #include "ChiliWin.h"
 #include "ChiliException.h"
 
+#include "Keyboard.h"
+
 class Window
 {
 public:
@@ -44,6 +46,11 @@ private:
 	static LRESULT CALLBACK HandleMsgSetup(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) noexcept;
 	static LRESULT CALLBACK HandleMsgThunk(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) noexcept;
 	LRESULT HandleMsg(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) noexcept;
+
+public:
+	//kbd 作为Windows embedded Object 生命周期与Winod绑定
+	Keyboard kbd;
+
 private:
 	int width;
 	int height;
