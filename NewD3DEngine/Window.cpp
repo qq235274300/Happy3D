@@ -214,7 +214,31 @@ LRESULT Window::HandleMsg(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) noe
 	case WM_MOUSEMOVE:
 	{
 		const POINTS pos = MAKEPOINTS(lParam);
-		mouse.OnMouseMove(pos.x, pos.y);
+		if (pos.x >= 0 && pos.x < width && pos.y >= 0 && pos.y < height)
+		{
+			//如果在ClinetWindow内 生成MouseMoveEvent
+			mouse.OnMouseMove(pos.x, pos.y);
+			if (!mouse.IsInWindow())
+			{
+				//状态切换
+				SetCapture(hWnd);
+				mouse.OnMouseEnter();
+			}
+		}
+		else
+		{
+			if (wParam & (MK_LBUTTON | MK_RBUTTON))
+			{
+				//离开Clinet Window 按住左键 或者 右键 产生DraEvent;
+				mouse.OnMouseMove(pos.x, pos.y);
+			}
+			else
+			{
+				ReleaseCapture();
+				mouse.OnMouseLeave();	
+			}
+		}
+		
 		break;
 	}
 
@@ -264,7 +288,7 @@ LRESULT Window::HandleMsg(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) noe
 	/********************END MOUSE MESSAGE******************************/
 
 
-	}
+
 
 	return DefWindowProc(hWnd, msg, wParam, lParam);
 }
