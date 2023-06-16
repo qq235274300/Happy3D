@@ -108,6 +108,7 @@ HINSTANCE Window::WindowClass::GetInstance() noexcept
 
 // Window Stuff
 Window::Window(int width, int height, const char* name)
+	:width(width),height(height)
 {
 	// calculate window size based on desired client region size
 	RECT wr;
@@ -116,7 +117,7 @@ Window::Window(int width, int height, const char* name)
 	wr.top = 100;
 	wr.bottom = height + wr.top;
 	
-	if (FAILED(AdjustWindowRect(&wr, WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU, FALSE)))
+	if (AdjustWindowRect(&wr, WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU, FALSE) == 0 )
 	{
 		throw CHWND_LAST_EXCEPT();
 	};
@@ -139,6 +140,15 @@ Window::Window(int width, int height, const char* name)
 Window::~Window()
 {
 	DestroyWindow(hWnd);
+}
+
+void Window::SetTitle(const std::string& title)
+{
+	if (SetWindowText(hWnd, title.c_str()) == 0)
+	{
+		throw CHWND_LAST_EXCEPT();
+	}
+	
 }
 
 LRESULT CALLBACK Window::HandleMsgSetup(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) noexcept
@@ -197,6 +207,63 @@ LRESULT Window::HandleMsg(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) noe
 		kbd.OnChar(static_cast<unsigned char>(wParam));
 		break;
 	/*********************END KEYBOARD MESSAGE*******************************/
+
+
+
+	/********************MOUSE MESSAGE******************************/
+	case WM_MOUSEMOVE:
+	{
+		const POINTS pos = MAKEPOINTS(lParam);
+		mouse.OnMouseMove(pos.x, pos.y);
+		break;
+	}
+
+	case WM_LBUTTONDOWN:
+	{
+		const POINTS pos = MAKEPOINTS(lParam);
+		mouse.OnLeftPressed(pos.x, pos.y);
+		break;
+	}
+
+	case WM_RBUTTONDOWN:
+	{
+		const POINTS pos = MAKEPOINTS(lParam);
+		mouse.OnRightPressed(pos.x, pos.y);
+		break;
+	}
+
+	case WM_LBUTTONUP:
+	{
+		const POINTS pos = MAKEPOINTS(lParam);
+		mouse.OnLeftReleased(pos.x, pos.y);
+		break;
+	}
+
+	case WM_RBUTTONUP:
+	{
+		const POINTS pos = MAKEPOINTS(lParam);
+		mouse.OnRightReleased(pos.x, pos.y);
+		break;
+	}
+
+	case WM_MOUSEWHEEL:
+	{
+		const POINTS pos = MAKEPOINTS(lParam);
+		if (GET_WHEEL_DELTA_WPARAM(wParam) > 0)
+		{
+			mouse.OnWheelUp(pos.x, pos.y);
+		}
+		else
+		{
+			mouse.OnWheelDown(pos.x, pos.y);
+		}
+		break;
+	}
+
+
+	/********************END MOUSE MESSAGE******************************/
+
+
 	}
 
 	return DefWindowProc(hWnd, msg, wParam, lParam);

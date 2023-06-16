@@ -45,7 +45,7 @@ public:
 		}
 
 		bool isPressed()const noexcept
-		{
+		{ 
 			return type == Type::Press;
 		}
 

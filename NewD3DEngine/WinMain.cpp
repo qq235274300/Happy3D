@@ -1,5 +1,5 @@
 #include "Window.h"
-
+#include <sstream>
 
 int CALLBACK WinMain(
 	HINSTANCE hInstance,
@@ -19,9 +19,21 @@ int CALLBACK WinMain(
 			TranslateMessage(&msg);
 			DispatchMessage(&msg);
 
+			//Test Knd
 			if (wnd.kbd.IsKeyPressed(VK_MENU))
 			{
 				MessageBox(nullptr, "Something Happon", "Sapce Key is Pressed", MB_OK | MB_ICONEXCLAMATION);
+			}
+			//Test Mouse
+			while (!wnd.mouse.IsEmpty())
+			{
+				Mouse::Event e = wnd.mouse.Read();
+				if (e.GetType() == Mouse::Event::Type::Move)
+				{
+					std::ostringstream oss;
+					oss << "MousePos:(" << e.GetPosX() << "," << e.GetPosY()<<")";
+					wnd.SetTitle(oss.str());
+				}
 			}
 		}
 

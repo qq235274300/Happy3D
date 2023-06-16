@@ -139,6 +139,7 @@
   <ItemGroup>
     <ClCompile Include="ChiliException.cpp" />
     <ClCompile Include="Keyboard.cpp" />
+    <ClCompile Include="Mouse.cpp" />
     <ClCompile Include="Window.cpp" />
     <ClCompile Include="WindowsMessageMap.cpp" />
     <ClCompile Include="WinMain.cpp" />
