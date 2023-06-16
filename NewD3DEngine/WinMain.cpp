@@ -13,6 +13,7 @@ int CALLBACK WinMain(
 
 		MSG msg;
 		BOOL gResult;
+		int WheelNum = 0;
 		while ((gResult = GetMessage(&msg, nullptr, 0, 0)) > 0)
 		{
 			// TranslateMessage will post auxilliary WM_CHAR messages from key msgs
@@ -28,12 +29,28 @@ int CALLBACK WinMain(
 			while (!wnd.mouse.IsEmpty())
 			{
 				Mouse::Event e = wnd.mouse.Read();
-				if (e.GetType() == Mouse::Event::Type::Move)
+				/*if (e.GetType() == Mouse::Event::Type::Move)
 				{
 					std::ostringstream oss;
 					oss << "MousePos:(" << e.GetPosX() << "," << e.GetPosY()<<")";
 					wnd.SetTitle(oss.str());
 				}
+				if (e.GetType() == Mouse::Event::Type::Leave)
+				{
+					std::ostringstream oss;
+					oss << "MouseLeave:(";
+					wnd.SetTitle(oss.str());
+				}*/
+				if (e.GetType() == Mouse::Event::Type::WheelUp)
+				{
+					WheelNum++;
+				}
+				if (e.GetType() == Mouse::Event::Type::WheelDown)
+				{
+					WheelNum--;
+				}
+
+				wnd.SetTitle(std::to_string(WheelNum));
 			}
 		}
 

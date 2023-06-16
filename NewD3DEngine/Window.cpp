@@ -191,7 +191,7 @@ LRESULT Window::HandleMsg(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) noe
 	case WM_KILLFOCUS:
 		kbd.ClearState();
 		break;
-	/********************KEYBOARD MESSAGE******************************/
+		/********************KEYBOARD MESSAGE******************************/
 	case WM_KEYDOWN:
 	case WM_SYSKEYDOWN:
 		if (!(lParam & 0x40000000) || kbd.AutorepeatIsEnabled()) // filter autorepeat BIT 30
@@ -206,11 +206,11 @@ LRESULT Window::HandleMsg(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) noe
 	case WM_CHAR:
 		kbd.OnChar(static_cast<unsigned char>(wParam));
 		break;
-	/*********************END KEYBOARD MESSAGE*******************************/
+		/*********************END KEYBOARD MESSAGE*******************************/
 
 
 
-	/********************MOUSE MESSAGE******************************/
+		/********************MOUSE MESSAGE******************************/
 	case WM_MOUSEMOVE:
 	{
 		const POINTS pos = MAKEPOINTS(lParam);
@@ -235,10 +235,10 @@ LRESULT Window::HandleMsg(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) noe
 			else
 			{
 				ReleaseCapture();
-				mouse.OnMouseLeave();	
+				mouse.OnMouseLeave();
 			}
 		}
-		
+
 		break;
 	}
 
@@ -273,22 +273,15 @@ LRESULT Window::HandleMsg(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) noe
 	case WM_MOUSEWHEEL:
 	{
 		const POINTS pos = MAKEPOINTS(lParam);
-		if (GET_WHEEL_DELTA_WPARAM(wParam) > 0)
-		{
-			mouse.OnWheelUp(pos.x, pos.y);
-		}
-		else
-		{
-			mouse.OnWheelDown(pos.x, pos.y);
-		}
+		const int delta = GET_WHEEL_DELTA_WPARAM(wParam);
+		mouse.OnWheelDelta(pos.x, pos.y, delta);
 		break;
 	}
 
 
 	/********************END MOUSE MESSAGE******************************/
-
-
-
+	
+	}
 
 	return DefWindowProc(hWnd, msg, wParam, lParam);
 }
