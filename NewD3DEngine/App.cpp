@@ -8,25 +8,16 @@ App::App()
 
 int App::Go()
 {
-	MSG msg;
-	BOOL gResult;
-	int WheelNum = 0;
-	while ((gResult = GetMessage(&msg, nullptr, 0, 0)) > 0)
+	while (true)
 	{
-		// TranslateMessage will post auxilliary WM_CHAR messages from key msgs
-		TranslateMessage(&msg);
-		DispatchMessage(&msg);
+		if (const auto ecode = Window::ProcessMessages())
+		{
+			return *ecode;
+		}
 
 		DoFrame();
+		
 	}
-
-	if (gResult == -1)
-	{
-		throw CHWND_LAST_EXCEPT();
-	}
-
-	// wParam here is the value passed to PostQuitMessage
-	return msg.wParam;
 
 }
 
