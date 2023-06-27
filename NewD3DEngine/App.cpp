@@ -29,4 +29,10 @@ void App::DoFrame()
 	//std::setprecision(1) 浮点精度为1 3.1 std::fixed 固定输出精度 即使为0 
 	oss <<"Time elapsed"<< std::setprecision(1)<< std::fixed << t <<"s";
 	wnd.SetTitle(oss.str());
+
+	const float red = std::sin(timer.Peek()) /2.f + 0.5f;
+	wnd.Gfx().ClearBuffer(red, red, 1.0f);
+
+	wnd.Gfx().EndFrame();
+	
 }
