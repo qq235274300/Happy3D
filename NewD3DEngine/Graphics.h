@@ -4,6 +4,7 @@
 #include <d3d11.h>
 #include <vector>
 #include "DxgiInfoManager.h"
+#include <wrl.h>
 
 class Graphics
 {
@@ -40,7 +41,7 @@ public:
 	Graphics(const Graphics&) = delete;
 	//复制赋值构造函数
 	Graphics& operator=(const Graphics&) = delete;
-	~Graphics();
+	~Graphics() = default;
 	
 public:
 	void EndFrame();
@@ -51,10 +52,10 @@ private:
 #endif
 
 private:
-	IDXGISwapChain* pSwapChain;
-	ID3D11Device* pDevice;
-	ID3D11DeviceContext* pContext;
-	ID3D11RenderTargetView* pTarget;
+	Microsoft::WRL::ComPtr<IDXGISwapChain> pSwapChain;
+	Microsoft::WRL::ComPtr<ID3D11Device> pDevice;
+	Microsoft::WRL::ComPtr<ID3D11DeviceContext> pContext;
+	Microsoft::WRL::ComPtr<ID3D11RenderTargetView> pTarget;
 
 };
 
