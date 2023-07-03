@@ -2,8 +2,11 @@
 #include "dxerr.h"
 #include <sstream>
 #include <d3dcompiler.h>
+#include <DirectXMath.h>
 
 namespace wrl = Microsoft::WRL;
+namespace dx = DirectX;
+
 #pragma comment  (lib,"d3d11.lib")
 #pragma comment (lib,"D3DCompiler.lib")
 
@@ -72,7 +75,7 @@ Graphics::Graphics(HWND hwnd)
 }
 
 
-void Graphics::DrawSomeShit(float angle)
+void Graphics::DrawSomeShit(float angle, float x, float y)
 {
 	HRESULT hr;
 
@@ -104,7 +107,7 @@ void Graphics::DrawSomeShit(float angle)
 		{-0.5f,-0.5f,0,0,255,1},
 		{-0.3f,0.3f,255,0,0,1},
 		{0.3f,0.3f,0,255,0,1},
-		{0.0f,-0.8f,0,0,255,1}
+		{0.0f,-1.0f,0,0,255,1}
 	};
 		 
 
@@ -156,19 +159,17 @@ void Graphics::DrawSomeShit(float angle)
 	//create constant buffer for transformation matrix 
 	struct ConstantBuffer
 	{
-		struct
-		{
-			float element[4][4];
-		}transformation;
+		dx::XMMATRIX transform;
 	};
 
 	const ConstantBuffer cb =
 	{
 		{
-			std::cos(angle),	std::sin(angle),	0.0f,	0.0f,
-			-std::sin(angle),	std::cos(angle),	0.0f,	0.0f,
-			0.0f,				0.0f,				1.0f,	0.0f,
-			0.0f,				0.0f,				0.0f,	1.0f,
+			dx::XMMatrixTranspose(
+				dx::XMMatrixRotationZ(angle)*
+				dx::XMMatrixScaling(3.0f / 4.0f,1.0f,1.0f)*
+				dx::XMMatrixTranslation(x,y,0.0f)
+			)
 		}
 	};
 	

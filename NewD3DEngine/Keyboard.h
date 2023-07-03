@@ -2,7 +2,7 @@
 
 #include <bitset>
 #include <queue>
-
+#include <optional>
 
 
 class Keyboard
@@ -18,7 +18,6 @@ public:
 		{
 			Press,
 			Release,
-			Invalid
 		};
 
 	private:
@@ -26,12 +25,6 @@ public:
 		unsigned char keycode;
 		
 	public:
-		Event()noexcept
-			:type(Type::Invalid), keycode(0u)
-		{
-			
-		}
-
 		Event(Type inType) noexcept
 			:type(inType), keycode(0u)
 		{
@@ -54,11 +47,7 @@ public:
 			return type == Type::Release;
 		}
 
-		bool isValide()const noexcept
-		{
-			return type != Type::Invalid;
-		}
-
+	
 		unsigned char GetKeyCode() const noexcept
 		{
 			return keycode;
@@ -74,12 +63,12 @@ public:
 	//目前有的API 能力，查询是否按键，消息在Window里面绑定
 	//EVENT
 	bool IsKeyPressed(unsigned char keycode)const noexcept;
-	Event ReadKey()noexcept;
+	std::optional<Event> ReadKey()noexcept;
 	bool KeyIsEmpty()const noexcept;
 	void FlushKey()noexcept;
 
 	//Char Text Input
-	char ReadChar() noexcept;
+	std::optional<char> ReadChar() noexcept;
 	bool CharIsEmpty()const noexcept;
 	void FlushChar()noexcept;
 	
