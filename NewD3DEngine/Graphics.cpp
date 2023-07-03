@@ -72,23 +72,41 @@ Graphics::Graphics(HWND hwnd)
 }
 
 
-void Graphics::DrawSomeShit()
+void Graphics::DrawSomeShit(float angle)
 {
 	HRESULT hr;
 
 	struct Vertex
 	{
-		float x;
-		float y;
+		struct 
+		{
+			float x;
+			float y;
+		}pos;
+	
+		struct 
+		{
+			const unsigned char r;
+			const unsigned char g;
+			const unsigned char b;
+			const unsigned char a;
+		}color;
+		//float r; //一个float 四个byte，Color在0-255 
+		//float g;
+		//float b;
+		
 	};
-
+	//顺时针
 	const Vertex vertices[] =
 	{
-		{0.f,0.5f},
-		{0.5f,-0.5f},
-		{-0.5f,-0.5f}
+		{0.f,0.5f,255,0,0,1},
+		{0.5f,-0.5f,0,255,0,1},
+		{-0.5f,-0.5f,0,0,255,1},
+		{-0.3f,0.3f,255,0,0,1},
+		{0.3f,0.3f,0,255,0,1},
+		{0.0f,-0.8f,0,0,255,1}
 	};
-		
+		 
 
 	wrl::ComPtr<ID3D11Buffer> pVertextBuffer;
 
@@ -105,10 +123,69 @@ void Graphics::DrawSomeShit()
 	sd.pSysMem = vertices;
 	
 	GFX_THROW_INFO(pDevice->CreateBuffer(&bd, &sd, &pVertextBuffer));
-		
-	const UINT pStrides = sizeof(Vertex); 
+
+	const UINT pStrides = sizeof(Vertex);
 	const UINT pOffsets = 0u;
-	pContext->IASetVertexBuffers(0u, 1u,pVertextBuffer.GetAddressOf(), &pStrides, &pOffsets);
+	pContext->IASetVertexBuffers(0u, 1u, pVertextBuffer.GetAddressOf(), &pStrides, &pOffsets);
+
+	//Create Index Buffer
+	const unsigned short indices[] =
+	{
+		0,1,2,
+		0,2,3,
+		0,4,1,
+		2,1,5,
+	};
+	wrl::ComPtr<ID3D11Buffer> pIndexBuffer;
+	D3D11_BUFFER_DESC ibd = {};
+	ibd.ByteWidth = sizeof(indices);
+	ibd.Usage = D3D11_USAGE_DEFAULT;
+	ibd.BindFlags = D3D10_BIND_INDEX_BUFFER;
+	ibd.CPUAccessFlags = 0u;
+	ibd.MiscFlags = 0u;
+	ibd.StructureByteStride = sizeof(unsigned short);
+
+	D3D11_SUBRESOURCE_DATA isd = {};
+	isd.pSysMem = indices;
+
+	GFX_THROW_INFO(pDevice->CreateBuffer(&ibd, &isd, &pIndexBuffer));
+
+	//bind Index Buffer
+	pContext->IASetIndexBuffer(pIndexBuffer.Get(),DXGI_FORMAT_R16_UINT,0u);
+
+	//create constant buffer for transformation matrix 
+	struct ConstantBuffer
+	{
+		struct
+		{
+			float element[4][4];
+		}transformation;
+	};
+
+	const ConstantBuffer cb =
+	{
+		{
+			std::cos(angle),	std::sin(angle),	0.0f,	0.0f,
+			-std::sin(angle),	std::cos(angle),	0.0f,	0.0f,
+			0.0f,				0.0f,				1.0f,	0.0f,
+			0.0f,				0.0f,				0.0f,	1.0f,
+		}
+	};
+	
+	wrl::ComPtr<ID3D11Buffer> pConstantBuffer;
+	D3D11_BUFFER_DESC cbd;
+	cbd.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+	cbd.Usage = D3D11_USAGE_DYNAMIC;  //Update Eveny frame
+	cbd.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+	cbd.MiscFlags = 0u;
+	cbd.ByteWidth = sizeof(cb);
+	cbd.StructureByteStride = 0u;
+	D3D11_SUBRESOURCE_DATA csd = {};
+	csd.pSysMem = &cb;
+	GFX_THROW_INFO(pDevice->CreateBuffer(&cbd, &csd, &pConstantBuffer));
+
+	// bind constant buffer to vertex shader
+	pContext->VSSetConstantBuffers(0u, 1u, pConstantBuffer.GetAddressOf());
 
 	//进制大对象（Binary Large Object  ID3DBlob 接口提供了访问二进制数据块的方法，可以获取其指针、大小以及其他相关信息。它还提供了一些用于操作和处理二进制数据的功能，例如复制、裁剪、串联
 	wrl::ComPtr<ID3DBlob> pBlob;
@@ -132,7 +209,9 @@ void Graphics::DrawSomeShit()
 	wrl::ComPtr<ID3D11InputLayout> pInputLayout;
 	const D3D11_INPUT_ELEMENT_DESC ied[] =
 	{
-		{"POSITION",0,DXGI_FORMAT_R32G32_FLOAT,0,0,D3D11_INPUT_PER_VERTEX_DATA,0}
+		//DXGI_FORMAT_R32G32_FLOAT   DXGI_FORMAT_R8G8B8A8_UINT  /8 前者表示每个通道用四字节float表示  后者表示1字节 无符号整数表示
+		{"Position",0,DXGI_FORMAT_R32G32_FLOAT,0,0,D3D11_INPUT_PER_VERTEX_DATA,0},
+		{"Color",0,DXGI_FORMAT_R8G8B8A8_UNORM,0,8u,D3D11_INPUT_PER_VERTEX_DATA,0}
 	};
 	GFX_THROW_INFO(pDevice->CreateInputLayout(ied, (UINT)std::size(ied), pBlob->GetBufferPointer(), pBlob->GetBufferSize(), &pInputLayout));
 
@@ -143,7 +222,7 @@ void Graphics::DrawSomeShit()
 	
 	pContext->OMSetRenderTargets(1u, pTarget.GetAddressOf(), nullptr);
 	
-
+	 
 	//Set primitive topology to triangle list (group of 3 vertices)
 	pContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
@@ -159,7 +238,7 @@ void Graphics::DrawSomeShit()
 	pContext->RSSetViewports(1u, &vp);
 
 	
-	GFX_THROW_INFO_ONLY(pContext->Draw((UINT)std::size(vertices), 0u));
+	GFX_THROW_INFO_ONLY(pContext->DrawIndexed((UINT)std::size(indices),0u, 0u));
 }
 
 

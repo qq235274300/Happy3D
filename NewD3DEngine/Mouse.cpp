@@ -1,5 +1,6 @@
-#include "Mouse.h"
 #include "ChiliWin.h"
+#include "Mouse.h"
+
 
 std::pair<int, int> Mouse::GetPos() const noexcept
 {

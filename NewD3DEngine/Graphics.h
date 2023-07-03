@@ -56,7 +56,7 @@ public:
 	~Graphics() = default;
 	
 public:
-	void DrawSomeShit();
+	void DrawSomeShit(float angle);
 
 public:
 	void EndFrame();
