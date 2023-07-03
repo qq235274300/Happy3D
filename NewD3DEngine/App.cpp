@@ -1,7 +1,7 @@
 #include "App.h"
 
 App::App()
-	:wnd(800, 300, "Donkey Fart Box")
+	:wnd(800, 600, "Donkey Fart Box")
 {
 	
 }
