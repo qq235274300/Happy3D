@@ -27,6 +27,18 @@ public:
 		HRESULT hr;
 		std::string info;
 	};
+
+	class InfoException : public Exception
+	{
+	public:
+		InfoException(int line, const char* file, std::vector<std::string> infoMsgs) noexcept;
+		const char* what() const noexcept override;
+		const char* GetType() const noexcept override;
+		std::string GetErrorInfo() const noexcept;
+	private:
+		std::string info;
+	};
+
 	class DeviceRemovedException : public HrException
 	{
 		using HrException::HrException;
@@ -43,6 +55,9 @@ public:
 	Graphics& operator=(const Graphics&) = delete;
 	~Graphics() = default;
 	
+public:
+	void DrawSomeShit();
+
 public:
 	void EndFrame();
 	void ClearBuffer(float red, float green ,float blue)noexcept;
