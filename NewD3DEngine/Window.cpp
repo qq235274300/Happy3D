@@ -223,6 +223,8 @@ LRESULT Window::HandleMsg(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) noe
 	{
 		const POINTS pos = MAKEPOINTS(lParam);
 		mouse.OnLeftPressed(pos.x, pos.y);
+		// bring window to foreground on lclick client region
+		SetForegroundWindow(hWnd);
 		break;
 	}
 
