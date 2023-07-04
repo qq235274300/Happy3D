@@ -87,14 +87,7 @@ void Graphics::DrawSomeShit(float angle, float x, float y)
 			float y;
 			float z;
 		}pos;
-	
-		struct 
-		{
-			const unsigned char r;
-			const unsigned char g;
-			const unsigned char b;
-			const unsigned char a;
-		}color;
+
 		//float r; //一个float 四个byte，Color在0-255 
 		//float g;
 		//float b;
@@ -103,14 +96,14 @@ void Graphics::DrawSomeShit(float angle, float x, float y)
 	//顺时针
 	const Vertex vertices[] =
 	{
-		{-1.0f,-1.0f,-1.0f,255,0,0,1},
-		{1.0f,-1.0f,-1.0f,255,0,1},
-		{-1.0f,1.0f,-1.0f,0,0,255,1},
-		{1.0f,1.0f,-1.0f,255,255,0,1},
-		{-1.0f,-1.0f,1.0f,255,0,255,1},
-		{1.0f,-1.0f,1.0f,0,255,255,1},
-		{-1.0f,1.0f,1.0f,0,0,0,1},
-		{1.0f,1.0f,1.0f,255,255,255,1}
+		{-1.0f,-1.0f,-1.0f},
+		{1.0f,-1.0f,-1.0f},
+		{-1.0f,1.0f,-1.0f},
+		{1.0f,1.0f,-1.0f},
+		{-1.0f,-1.0f,1.0f},
+		{1.0f,-1.0f,1.0f},
+		{-1.0f,1.0f,1.0f},
+		{1.0f,1.0f,1.0f}
 	};
 		 
 
@@ -194,6 +187,48 @@ void Graphics::DrawSomeShit(float angle, float x, float y)
 	// bind constant buffer to vertex shader
 	pContext->VSSetConstantBuffers(0u, 1u, pConstantBuffer.GetAddressOf());
 
+
+	struct ConstantColorBuffer
+	{
+		struct 
+		{
+			float r;
+			float g;
+			float b;
+			float a;
+		}face_colors[6];
+	};
+
+	const ConstantColorBuffer ccb =
+	{
+		{
+			{1.0f,0.0f,1.0f},
+			{1.0f,0.0f,0.0f},
+			{0.0f,1.0f,0.0f},
+			{0.0f,0.0f,1.0f},
+			{1.0f,1.0f,0.0f},
+			{0.0f,1.0f,1.0f},
+		}
+	};
+
+	wrl::ComPtr<ID3D11Buffer> pConstantColorBuffer;
+	D3D11_BUFFER_DESC ccbd;
+	ccbd.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+	ccbd.Usage = D3D11_USAGE_DEFAULT;  //Update Eveny frame
+	ccbd.CPUAccessFlags = 0u;
+	ccbd.MiscFlags = 0u;
+	ccbd.ByteWidth = sizeof(ccb);
+	ccbd.StructureByteStride = 0u;
+	D3D11_SUBRESOURCE_DATA ccsd = {};
+	ccsd.pSysMem = &ccb;
+	GFX_THROW_INFO(pDevice->CreateBuffer(&ccbd, &ccsd, &pConstantColorBuffer));
+
+	// bind constant buffer to pixel shader
+	pContext->PSSetConstantBuffers(0u, 1u, pConstantColorBuffer.GetAddressOf());
+
+
+
+
 	//进制大对象（Binary Large Object  ID3DBlob 接口提供了访问二进制数据块的方法，可以获取其指针、大小以及其他相关信息。它还提供了一些用于操作和处理二进制数据的功能，例如复制、裁剪、串联
 	wrl::ComPtr<ID3DBlob> pBlob;
 
@@ -217,8 +252,8 @@ void Graphics::DrawSomeShit(float angle, float x, float y)
 	const D3D11_INPUT_ELEMENT_DESC ied[] =
 	{
 		//DXGI_FORMAT_R32G32_FLOAT   DXGI_FORMAT_R8G8B8A8_UINT  /8 前者表示每个通道用四字节float表示  后者表示1字节 无符号整数表示
-		{"Position",0,DXGI_FORMAT_R32G32B32_FLOAT,0,0,D3D11_INPUT_PER_VERTEX_DATA,0},
-		{"Color",0,DXGI_FORMAT_R8G8B8A8_UNORM,0,12u,D3D11_INPUT_PER_VERTEX_DATA,0}
+		{"Position",0,DXGI_FORMAT_R32G32B32_FLOAT,0,0,D3D11_INPUT_PER_VERTEX_DATA,0}
+		//{"Color",0,DXGI_FORMAT_R8G8B8A8_UNORM,0,12u,D3D11_INPUT_PER_VERTEX_DATA,0}
 	};
 	GFX_THROW_INFO(pDevice->CreateInputLayout(ied, (UINT)std::size(ied), pBlob->GetBufferPointer(), pBlob->GetBufferSize(), &pInputLayout));
 
@@ -228,7 +263,6 @@ void Graphics::DrawSomeShit(float angle, float x, float y)
 	//bind Render Target
 	
 	pContext->OMSetRenderTargets(1u, pTarget.GetAddressOf(), nullptr);
-	
 	 
 	//Set primitive topology to triangle list (group of 3 vertices)
 	pContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
