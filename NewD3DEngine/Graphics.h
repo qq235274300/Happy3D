@@ -56,7 +56,7 @@ public:
 	~Graphics() = default;
 	
 public:
-	void DrawSomeShit(float angle, float x, float y);
+	void DrawSomeShit(float angle, float x, float z);
 
 public:
 	void EndFrame();
@@ -71,6 +71,7 @@ private:
 	Microsoft::WRL::ComPtr<ID3D11Device> pDevice;
 	Microsoft::WRL::ComPtr<ID3D11DeviceContext> pContext;
 	Microsoft::WRL::ComPtr<ID3D11RenderTargetView> pTarget;
+	Microsoft::WRL::ComPtr<ID3D11DepthStencilView> pDSV;
 
 };
 

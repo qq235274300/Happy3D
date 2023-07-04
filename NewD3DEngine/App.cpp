@@ -33,6 +33,10 @@ void App::DoFrame()
 	const float red = std::sin(timer.Peek()) /2.f + 0.5f;
 	wnd.Gfx().ClearBuffer(red, red, 1.0f);
 
+	wnd.Gfx().DrawSomeShit(-timer.Peek(),
+		0.0f,
+		0.0f);
+
 	wnd.Gfx().DrawSomeShit(timer.Peek(),
 		wnd.mouse.GetPosX() / 400.0f - 1.0f,
 		-wnd.mouse.GetPosY() / 300.0f + 1.0f);
