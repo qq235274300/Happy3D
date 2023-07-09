@@ -16,6 +16,15 @@
     <Filter Include="Shader">
       <UniqueIdentifier>{a7bb943e-5685-4546-af32-8ad6792beb64}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Macros">
+      <UniqueIdentifier>{9f38c5cf-4271-4245-a022-d1818bcbf95c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Bindable">
+      <UniqueIdentifier>{807cea3d-6f61-4e5f-86cf-1562ff1f53d5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Bindable">
+      <UniqueIdentifier>{0a8860b1-89b8-42e7-abe6-1f8c9fbacd0e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="WinMain.cpp">
@@ -49,6 +58,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="DxgiInfoManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="VertexBuffer.cpp">
+      <Filter>Source Files\Bindable</Filter>
+    </ClCompile>
+    <ClCompile Include="IndexBuffer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -90,9 +105,18 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="WindowsThrowMacros.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Macros</Filter>
     </ClInclude>
     <ClInclude Include="GraphicsThrowMacros.h">
+      <Filter>Header Files\Macros</Filter>
+    </ClInclude>
+    <ClInclude Include="VertexBuffer.h">
+      <Filter>Header Files\Bindable</Filter>
+    </ClInclude>
+    <ClInclude Include="Bindable.h">
+      <Filter>Header Files\Bindable</Filter>
+    </ClInclude>
+    <ClInclude Include="IndexBuffer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

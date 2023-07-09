@@ -5,6 +5,10 @@
 #include <vector>
 #include "DxgiInfoManager.h"
 #include <wrl.h>
+#include <d3dcompiler.h>
+#include <DirectXMath.h>
+#include <memory>
+#include <random>
 
 class Graphics
 {
@@ -54,9 +58,7 @@ public:
 	//复制赋值构造函数
 	Graphics& operator=(const Graphics&) = delete;
 	~Graphics() = default;
-	
-public:
-	void DrawSomeShit(float angle, float x, float z);
+
 
 public:
 	void EndFrame();
