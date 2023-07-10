@@ -12,6 +12,8 @@
 
 class Graphics
 {
+	friend class Bindable;
+
 public:
 	class Exception : public ChiliException
 	{
@@ -58,8 +60,12 @@ public:
 	//复制赋值构造函数
 	Graphics& operator=(const Graphics&) = delete;
 	~Graphics() = default;
-
-
+public:
+	void DrawIndexed(UINT count) noexcept(!IS_DEBUG);
+	void SetProjection(DirectX::FXMMATRIX proj) noexcept;
+	DirectX::XMMATRIX GetProjection() const noexcept;
+private:
+	DirectX::XMMATRIX projection;
 public:
 	void EndFrame();
 	void ClearBuffer(float red, float green ,float blue)noexcept;
