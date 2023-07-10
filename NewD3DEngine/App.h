@@ -10,6 +10,8 @@ public:
 public:
 	//Start Game Loop（When App Start 的时候调用）  //Message Loop 
 	int Go();
+	~App();
+
 
 private:
 	//Actually Game Loop
@@ -18,5 +20,7 @@ private:
 private:
 	Window wnd;
 	ChiliTimer timer;
+
+	std::vector<std::unique_ptr<class Box>> boxes;
 };
 
