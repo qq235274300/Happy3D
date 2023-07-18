@@ -13,7 +13,7 @@ public:
 
 		constexpr float side = 1.0f / 2.0f;
 
-		std::vector<V> vertices( 8 );
+		std::vector<V> vertices(8);
 		vertices[0].pos = { -side,-side,-side };
 		vertices[1].pos = { side,-side,-side };
 		vertices[2].pos = { -side,side,-side };
@@ -24,7 +24,7 @@ public:
 		vertices[7].pos = { side,side,side };
 
 		return{
-			std::move( vertices ),{
+			std::move(vertices),{
 				0,2,1, 2,3,1,
 				1,3,5, 3,7,5,
 				2,6,3, 3,6,7,
@@ -41,7 +41,7 @@ public:
 
 		constexpr float side = 1.0f / 2.0f;
 
-		std::vector<V> vertices( 14 );
+		std::vector<V> vertices(14);
 
 		vertices[0].pos = { -side,-side,-side };
 		vertices[0].tex = { 2.0f / 3.0f,0.0f / 4.0f };
@@ -73,7 +73,7 @@ public:
 		vertices[13].tex = { 0.0f / 3.0f,2.0f / 4.0f };
 
 		return{
-			std::move( vertices ),{
+			std::move(vertices),{
 				0,2,1,   2,3,1,
 				4,8,5,   5,8,9,
 				2,6,3,   3,6,7,
