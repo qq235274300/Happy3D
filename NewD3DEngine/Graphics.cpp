@@ -112,6 +112,11 @@ Graphics::Graphics(HWND hwnd)
 	ImGui_ImplDX11_Init(pDevice.Get(), pContext.Get());
 }
 
+Graphics::~Graphics()
+{
+	ImGui_ImplDX11_Shutdown();
+}
+
 #ifdef haha
 void Graphics::DrawSomeShit(float angle, float x, float z)
 {
@@ -336,6 +341,16 @@ void Graphics::SetProjection(DirectX::FXMMATRIX proj) noexcept
 DirectX::XMMATRIX Graphics::GetProjection() const noexcept
 {
 	return projection;
+}
+
+void Graphics::SetCamera(DirectX::FXMMATRIX cam) noexcept
+{
+	camera = cam;
+}
+
+DirectX::XMMATRIX Graphics::GetCamera() const noexcept
+{
+	return camera;
 }
 
 void Graphics::BeginFrame(float red, float green, float blue) noexcept

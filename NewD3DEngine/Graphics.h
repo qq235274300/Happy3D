@@ -59,11 +59,14 @@ public:
 	Graphics(const Graphics&) = delete;
 	//复制赋值构造函数
 	Graphics& operator=(const Graphics&) = delete;
-	~Graphics() = default;
+	~Graphics();
 public:
 	void DrawIndexed(UINT count) noexcept(!IS_DEBUG);
 	void SetProjection(DirectX::FXMMATRIX proj) noexcept;
 	DirectX::XMMATRIX GetProjection() const noexcept;
+	//相机矩阵
+	void SetCamera(DirectX::FXMMATRIX cam) noexcept;
+	DirectX::XMMATRIX GetCamera() const noexcept;
 private:
 	DirectX::XMMATRIX projection;
 public:
@@ -80,6 +83,7 @@ private:
 #endif
 
 private:
+	DirectX::XMMATRIX camera;
 	bool imguiEnabled = true;
 private:
 	Microsoft::WRL::ComPtr<IDXGISwapChain> pSwapChain;

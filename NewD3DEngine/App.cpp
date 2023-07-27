@@ -11,6 +11,7 @@
 #include "GDIPlusManager.h"
 #include "imgui/imgui.h"
 
+namespace dx = DirectX;
 
 GDIPlusManager gdipm;
 
@@ -78,7 +79,9 @@ App::App()
 
 	//const auto s = Surface::FromFile("Images\\kappa50.png");
 
-	wnd.Gfx().SetProjection(DirectX::XMMatrixPerspectiveLH(1.0f, 3.0f / 4.0f, 0.5f, 40.0f));
+	
+	wnd.Gfx().SetProjection(dx::XMMatrixPerspectiveLH(1.0f, 3.0f / 4.0f, 0.5f, 40.0f));
+	//wnd.Gfx().SetCamera(dx::XMMatrixTranslation(0.0f, 0.0f, 20.0f));
 }
 
 void App::DoFrame()
@@ -87,6 +90,7 @@ void App::DoFrame()
 
 	
 	wnd.Gfx().BeginFrame(0.07f, 0.0f, 0.12f);
+	wnd.Gfx().SetCamera(camer.GetMatrix());
 
 	for (auto& d : drawables)
 	{
@@ -100,11 +104,14 @@ void App::DoFrame()
 	{
 		
 		ImGui::SliderFloat("Speed Factor", &speed_factor, 0.0f, 4.0f);
-		ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
-		ImGui::InputText("Butts", buffer, sizeof(buffer));
+		//ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+		//ImGui::InputText("Butts", buffer, sizeof(buffer));
+		ImGui::Text("%.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+		ImGui::Text("Status: %s", wnd.kbd.IsKeyPressed(VK_SPACE) ? "PAUSED" : "RUNNING (hold spacebar to pause)");
 	}
 	ImGui::End();
 	// present
+	camer.SpawnControlWindow();
 
 	wnd.Gfx().EndFrame();
 }
