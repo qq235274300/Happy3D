@@ -67,13 +67,20 @@ public:
 private:
 	DirectX::XMMATRIX projection;
 public:
+	void BeginFrame(float red, float green, float blue)noexcept;
 	void EndFrame();
-	void ClearBuffer(float red, float green ,float blue)noexcept;
+public:
+	void EnableImgui()noexcept;
+	void DisableImgui()noexcept;
+	bool IsImguiEnabled()const noexcept;
+	
 private:
 #ifndef NDEBUG
 	DxgiInfoManager infoManager;
 #endif
 
+private:
+	bool imguiEnabled = true;
 private:
 	Microsoft::WRL::ComPtr<IDXGISwapChain> pSwapChain;
 	Microsoft::WRL::ComPtr<ID3D11Device> pDevice;

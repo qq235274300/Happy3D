@@ -2,6 +2,7 @@
 #include <sstream>
 #include "resource.h"
 #include "WindowsThrowMacros.h"
+#include "imgui/imgui_impl_win32.h"
 
 
 
@@ -79,6 +80,8 @@ Window::Window(int width, int height, const char* name)
 	}
 
 	ShowWindow(hWnd, SW_SHOWDEFAULT);
+	// Init ImGui Win32 Impl
+	ImGui_ImplWin32_Init(hWnd);
 
 	//ÑÓ³Ù´´½¨Gfx
 	pGfx = std::make_unique<Graphics>(hWnd);
@@ -86,6 +89,7 @@ Window::Window(int width, int height, const char* name)
 
 Window::~Window()
 {
+	ImGui_ImplWin32_Shutdown();
 	DestroyWindow(hWnd);
 }
 
@@ -100,6 +104,8 @@ void Window::SetTitle(const std::string& title)
 
 std::optional<int> Window::ProcessMessages()noexcept
 {
+	
+
 	MSG msg;
 	// while queue has messages, remove and dispatch them (but do not block on empty queue)
 	while (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))
@@ -130,6 +136,9 @@ Graphics& Window::Gfx() const
 
 LRESULT CALLBACK Window::HandleMsgSetup(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) noexcept
 {
+
+	
+
 	// use create parameter passed in from CreateWindow() to store window class pointer at WinAPI side
 	if (msg == WM_NCCREATE)
 	{
@@ -157,6 +166,11 @@ LRESULT CALLBACK Window::HandleMsgThunk(HWND hWnd, UINT msg, WPARAM wParam, LPAR
 
 LRESULT Window::HandleMsg(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) noexcept
 {
+	if (ImGui_ImplWin32_WndProcHandler(hWnd, msg, wParam, lParam))
+	{
+		return true;
+	}
+
 	switch (msg)
 	{
 		// we don't want the DefProc to handle this message because
