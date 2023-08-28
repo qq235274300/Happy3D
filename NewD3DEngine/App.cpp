@@ -17,7 +17,8 @@ GDIPlusManager gdipm;
 
 App::App()
 	:
-	wnd(800, 600, "The Donkey Fart Box")
+	wnd(800, 600, "The Donkey Fart Box"),
+	light(wnd.Gfx())
 {
 	class Factory
 	{
@@ -28,7 +29,7 @@ App::App()
 		{}
 		std::unique_ptr<Drawable> operator()()
 		{
-			switch (typedist(rng))
+			/*switch (typedist(rng))
 			{
 			case 0:
 				return std::make_unique<Pyramid>(
@@ -58,7 +59,12 @@ App::App()
 			default:
 				assert(false && "bad drawable type in factory");
 				return {};
-			}
+			}*/
+
+			return std::make_unique<Box>(
+				gfx, rng, adist, ddist,
+				odist, rdist, bdist
+				);
 		}
 	private:
 		Graphics& gfx;
@@ -68,9 +74,6 @@ App::App()
 		std::uniform_real_distribution<float> odist{ 0.0f,PI * 0.08f };
 		std::uniform_real_distribution<float> rdist{ 6.0f,20.0f };
 		std::uniform_real_distribution<float> bdist{ 0.4f,3.0f };
-		std::uniform_int_distribution<int> latdist{ 5,20 };
-		std::uniform_int_distribution<int> longdist{ 10,40 };
-		std::uniform_int_distribution<int> typedist{ 0,4 };
 	};
 
 	
@@ -91,12 +94,17 @@ void App::DoFrame()
 	
 	wnd.Gfx().BeginFrame(0.07f, 0.0f, 0.12f);
 	wnd.Gfx().SetCamera(camer.GetMatrix());
+	light.Bind(wnd.Gfx());
 
 	for (auto& d : drawables)
 	{
 		d->Update(wnd.kbd.IsKeyPressed(VK_SPACE) ? 0.0f : dt);
 		d->Draw(wnd.Gfx());
 	}
+
+	light.Draw(wnd.Gfx());
+
+	
 	static char buffer[1024];
 
 	// imgui window to control simulation speed
@@ -112,6 +120,7 @@ void App::DoFrame()
 	ImGui::End();
 	// present
 	camer.SpawnControlWindow();
+	light.SpawnControlWindow();
 
 	wnd.Gfx().EndFrame();
 }
