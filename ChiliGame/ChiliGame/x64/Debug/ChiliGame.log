@@ -1,0 +1,30 @@
+﻿  WinMain.cpp
+D:\Happy3D\NiceWork\ChiliGame\ChiliGame\WinMain.cpp(288,13): error C2100: illegal indirection
+D:\Happy3D\NiceWork\ChiliGame\ChiliGame\WinMain.cpp(288,13): error C2672: 'IID_PPV_ARGS_Helper': no matching overloaded function found
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.22621.0\winrt\wrl\client.h(913,8):
+  could be 'void **IID_PPV_ARGS_Helper(Microsoft::WRL::Details::ComPtrRef<T>) noexcept'
+  	D:\Happy3D\NiceWork\ChiliGame\ChiliGame\WinMain.cpp(288,13):
+  	'void **IID_PPV_ARGS_Helper(Microsoft::WRL::Details::ComPtrRef<T>) noexcept': could not deduce template argument for 'Microsoft::WRL::Details::ComPtrRef<T>' from 'D3D12_COMMAND_QUEUE_DESC *'
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.22621.0\um\combaseapi.h(201,84):
+  or       'void **IID_PPV_ARGS_Helper(T **)'
+  	D:\Happy3D\NiceWork\ChiliGame\ChiliGame\WinMain.cpp(288,13):
+  	'void **IID_PPV_ARGS_Helper(T **)': could not deduce template argument for 'T **' from 'D3D12_COMMAND_QUEUE_DESC *'
+  
+D:\Happy3D\NiceWork\ChiliGame\ChiliGame\WinMain.cpp(288,13): error C2660: 'ID3D12Device::CreateCommandQueue': function does not take 1 arguments
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.22621.0\um\d3d12.h(8503,43):
+  see declaration of 'ID3D12Device::CreateCommandQueue'
+  D:\Happy3D\NiceWork\ChiliGame\ChiliGame\WinMain.cpp(288,13):
+  while trying to match the argument list '(D3D12_COMMAND_QUEUE_DESC *)'
+  
+D:\Happy3D\NiceWork\ChiliGame\ChiliGame\WinMain.cpp(266,13): warning C4297: 'wWinMain': function assumed not to throw an exception but does
+  D:\Happy3D\NiceWork\ChiliGame\ChiliGame\WinMain.cpp(266,13):
+  __declspec(nothrow), throw(), noexcept(true), or noexcept was specified on the function
+  
+D:\Happy3D\NiceWork\ChiliGame\ChiliGame\WinMain.cpp(269,13): warning C4297: 'wWinMain': function assumed not to throw an exception but does
+  D:\Happy3D\NiceWork\ChiliGame\ChiliGame\WinMain.cpp(269,13):
+  __declspec(nothrow), throw(), noexcept(true), or noexcept was specified on the function
+  
+D:\Happy3D\NiceWork\ChiliGame\ChiliGame\WinMain.cpp(288,13): warning C4297: 'wWinMain': function assumed not to throw an exception but does
+  D:\Happy3D\NiceWork\ChiliGame\ChiliGame\WinMain.cpp(288,13):
+  __declspec(nothrow), throw(), noexcept(true), or noexcept was specified on the function
+  
