@@ -138,6 +138,9 @@ int APIENTRY _tWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCm
     ComPtr<ID3D12GraphicsCommandList>   pICMDList;
     ComPtr<IDXGISwapChain1>             pISwapChain1;
     ComPtr<IDXGISwapChain3>             pISwapChain3;
+    ComPtr<ID3D12DescriptorHeap>        pIRTVHeap;
+    ComPtr<ID3D12DescriptorHeap>        pISRVHeap;
+    ComPtr<ID3D12Resource>              pIARenderTargets[nFrameBackBufferCount];
 
     ComPtr<ID3D12PipelineState>         pIPipelineState;
 
@@ -305,32 +308,72 @@ int APIENTRY _tWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCm
         }
 
         //9 创建交换链
-        DXGI_SWAP_CHAIN_DESC1 stSwapChainDesc = {};
-        stSwapChainDesc.BufferCount = nFrameBackBufferCount;
-        stSwapChainDesc.Width = iWidth;
-        stSwapChainDesc.Height = iHeight;
-        stSwapChainDesc.Format = emRenderTarget;
-        stSwapChainDesc.BufferUsage = DXGI_SWAP_EFFECT_FLIP_DISCARD;
-        stSwapChainDesc.SampleDesc.Count = 1;
+        {
+            DXGI_SWAP_CHAIN_DESC1 stSwapChainDesc = {};
+            stSwapChainDesc.BufferCount = nFrameBackBufferCount;
+            stSwapChainDesc.Width = iWidth;
+            stSwapChainDesc.Height = iHeight;
+            stSwapChainDesc.Format = emRenderTarget;
+            stSwapChainDesc.BufferUsage = DXGI_SWAP_EFFECT_FLIP_DISCARD;
+            stSwapChainDesc.SampleDesc.Count = 1;
 
-        GRS_THROW_IF_FAILED(
-            pIDXGIFactory5->CreateSwapChainForHwnd(
-                pICMDQueue.Get(),
-                hWnd,
-                &stSwapChainDesc,
-                nullptr,
-                nullptr,
-                &pISwapChain1
-            )
-        );
-        //得到当前后缓冲区的序号，也就是下一个将要呈送显示的缓冲区的序号
-        //注意此处使用了高版本的SwapChain接口的函数
-        GRS_THROW_IF_FAILED(pISwapChain1.As(&pISwapChain3));
-        nFrameIndex = pISwapChain3->GetCurrentBackBufferIndex();
+            GRS_THROW_IF_FAILED(
+                pIDXGIFactory5->CreateSwapChainForHwnd(
+                    pICMDQueue.Get(),
+                    hWnd,
+                    &stSwapChainDesc,
+                    nullptr,
+                    nullptr,
+                    &pISwapChain1
+                )
+            );
+            //得到当前后缓冲区的序号，也就是下一个将要呈送显示的缓冲区的序号
+            //注意此处使用了高版本的SwapChain接口的函数
+            GRS_THROW_IF_FAILED(pISwapChain1.As(&pISwapChain3));
+            nFrameIndex = pISwapChain3->GetCurrentBackBufferIndex();
 
+            //创建RTV(渲染目标视图)描述符堆(这里堆的含义应当理解为数组或者固定大小元素的固定大小显存池)
+            D3D12_DESCRIPTOR_HEAP_DESC stRTVHeapDesc = {};
+            stRTVHeapDesc.NumDescriptors = nFrameBackBufferCount;
+            stRTVHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_RTV;
+            stRTVHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_NONE;
 
+            GRS_THROW_IF_FAILED(pID3D12Device4->CreateDescriptorHeap(&stRTVHeapDesc, IID_PPV_ARGS(&pIRTVHeap)));
 
+            //创建RTV的描述符
+            D3D12_CPU_DESCRIPTOR_HANDLE stRTVHandle = pIRTVHeap->GetCPUDescriptorHandleForHeapStart();
+            for (UINT i = 0; i < nFrameBackBufferCount; i++)
+            {
+                GRS_THROW_IF_FAILED(pISwapChain3->GetBuffer(i, IID_PPV_ARGS(&pIARenderTargets[i])));
+                pID3D12Device4->CreateRenderTargetView(pIARenderTargets[i].Get(), nullptr, stRTVHandle);
+                stRTVHandle.ptr += nRTVDescriptorSize;
+            }
 
+            // 关闭ALT+ENTER键切换全屏的功能，因为我们没有实现OnSize处理（创建窗口的时候关了），所以先关闭
+            GRS_THROW_IF_FAILED(pIDXGIFactory5->MakeWindowAssociation(hWnd, DXGI_MWA_NO_ALT_ENTER));
+
+        }
+
+        //对于这里堆的解释 
+        // 首先这里的堆指的都是为了GPU访问资源而申请的内存 UploadHeap(为CPU GPU共享内存 CPU写 GPU读)
+        //DefaultHeap(从UploadHeadp中拷贝 只对GPU读写) ReadbackHeap(GPU写 CPU读)
+
+        //关于堆的视图(描述符)
+        //首先每个资源都需要一个资源视图与其绑定 资源主要分为Buffer,Texture 
+        //资源视图有 IndexBufferView/VertexBufferView/ShaderResourceView(SRV)/ConstantBufferViw(CBV)/Sampler/RenderTargetView/DepthStencilView/StreamTargetView
+
+        //描述符堆
+        //就是装描述符的数组 分为CBV/SRV/UAV  Sampler  RTV  DSV
+
+        //10 创建SRV和CRV堆  着色器资源视图（Shader Resource View, SRV）和常量缓冲视图
+        {
+            D3D12_DESCRIPTOR_HEAP_DESC stSRVHeapDesc = {};
+            stSRVHeapDesc.NumDescriptors = 2; //描述符数量 指SRV_CBV 暂时不管UAV
+            stSRVHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
+            stSRVHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE; //可被着色器访问 这个VISIBLE标志会被绑定到Command List上
+            //创建描述符堆
+            GRS_THROW_IF_FAILED(pID3D12Device4->CreateDescriptorHeap(&stSRVHeapDesc, IID_PPV_ARGS(&pISRVHeap)));
+        }
     }
 
 
