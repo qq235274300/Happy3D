@@ -142,6 +142,8 @@ int APIENTRY _tWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCm
     ComPtr<ID3D12DescriptorHeap>        pISRVHeap;
     ComPtr<ID3D12Resource>              pIARenderTargets[nFrameBackBufferCount];
 
+
+    ComPtr<ID3D12RootSignature>         pIRootSignature;
     ComPtr<ID3D12PipelineState>         pIPipelineState;
 
 
@@ -374,6 +376,99 @@ int APIENTRY _tWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCm
             //创建描述符堆
             GRS_THROW_IF_FAILED(pID3D12Device4->CreateDescriptorHeap(&stSRVHeapDesc, IID_PPV_ARGS(&pISRVHeap)));
         }
+
+        //11 创建根签名
+        {
+            D3D12_FEATURE_DATA_ROOT_SIGNATURE stFeatureData = {};
+            // 检测是否支持V1.1版本的根签名
+            stFeatureData.HighestVersion = D3D_ROOT_SIGNATURE_VERSION_1_1;
+            if (FAILED(pID3D12Device4->CheckFeatureSupport(D3D12_FEATURE_ROOT_SIGNATURE, &stFeatureData, sizeof(stFeatureData))))
+            {
+                stFeatureData.HighestVersion = D3D_ROOT_SIGNATURE_VERSION_1_0;
+            }
+            // 在GPU上执行SetGraphicsRootDescriptorTable后，我们不修改命令列表中的SRV，因此我们可以使用默认Rang行为:
+            // D3D12_DESCRIPTOR_RANGE_FLAG_DATA_STATIC_WHILE_SET_AT_EXECUTE
+            D3D12_DESCRIPTOR_RANGE1 stDSPRanges1[2] = {};
+            //SRV
+            stDSPRanges1[0].RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_SRV;
+            stDSPRanges1[0].NumDescriptors = 1;
+            stDSPRanges1[0].BaseShaderRegister = 0;
+            stDSPRanges1[0].RegisterSpace = 0;
+            stDSPRanges1[0].Flags = D3D12_DESCRIPTOR_RANGE_FLAG_DATA_STATIC_WHILE_SET_AT_EXECUTE;
+            stDSPRanges1[0].OffsetInDescriptorsFromTableStart = 0;
+            //CBV
+            stDSPRanges1[1].RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_CBV;
+            stDSPRanges1[1].NumDescriptors = 1;
+            stDSPRanges1[1].BaseShaderRegister = 0;
+            stDSPRanges1[1].RegisterSpace = 0;
+            stDSPRanges1[1].Flags = D3D12_DESCRIPTOR_RANGE_FLAG_NONE;
+            stDSPRanges1[1].OffsetInDescriptorsFromTableStart = 0;
+
+            D3D12_ROOT_PARAMETER1 stRootParameters1[2] = {};
+            //SRV
+            stRootParameters1[0].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;
+            stRootParameters1[0].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;
+            stRootParameters1[0].DescriptorTable.NumDescriptorRanges = 1;
+            stRootParameters1[0].DescriptorTable.pDescriptorRanges = &stDSPRanges1[0];
+            //CBV
+            stRootParameters1[1].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;
+            stRootParameters1[1].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL;        //CBV是所有Shader可见
+            stRootParameters1[1].DescriptorTable.NumDescriptorRanges = 1;
+            stRootParameters1[1].DescriptorTable.pDescriptorRanges = &stDSPRanges1[1];
+
+
+            //因为参数存在纹理 对于创建了采样器Sampler
+            D3D12_STATIC_SAMPLER_DESC stSamplerDesc[1] = {};
+            stSamplerDesc[0].Filter = D3D12_FILTER_MIN_MAG_MIP_POINT;
+            stSamplerDesc[0].AddressU = D3D12_TEXTURE_ADDRESS_MODE_BORDER;
+            stSamplerDesc[0].AddressV = D3D12_TEXTURE_ADDRESS_MODE_BORDER;
+            stSamplerDesc[0].AddressW = D3D12_TEXTURE_ADDRESS_MODE_BORDER;
+            stSamplerDesc[0].MipLODBias = 0;
+            stSamplerDesc[0].MaxAnisotropy = 0;
+            stSamplerDesc[0].ComparisonFunc = D3D12_COMPARISON_FUNC_NEVER;
+            stSamplerDesc[0].BorderColor = D3D12_STATIC_BORDER_COLOR_TRANSPARENT_BLACK;
+            stSamplerDesc[0].MinLOD = 0.0f;
+            stSamplerDesc[0].MaxLOD = D3D12_FLOAT32_MAX;
+            stSamplerDesc[0].ShaderRegister = 0;
+            stSamplerDesc[0].RegisterSpace = 0;
+            stSamplerDesc[0].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;
+
+            D3D12_VERSIONED_ROOT_SIGNATURE_DESC stRootSignatureDesc = {};
+            stRootSignatureDesc.Version = D3D_ROOT_SIGNATURE_VERSION_1_1;
+            stRootSignatureDesc.Desc_1_1.Flags = D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT;
+            stRootSignatureDesc.Desc_1_1.NumParameters = _countof(stRootParameters1);
+            stRootSignatureDesc.Desc_1_1.pParameters = stRootParameters1;
+            stRootSignatureDesc.Desc_1_1.NumStaticSamplers = _countof(stSamplerDesc);
+            stRootSignatureDesc.Desc_1_1.pStaticSamplers = stSamplerDesc;
+
+            ComPtr<ID3DBlob> pISignatureBlob;
+            ComPtr<ID3DBlob> pIErrorBlob;
+            GRS_THROW_IF_FAILED(D3D12SerializeVersionedRootSignature(&stRootSignatureDesc
+                , &pISignatureBlob
+                , &pIErrorBlob));
+
+            GRS_THROW_IF_FAILED(pID3D12Device4->CreateRootSignature(0
+                , pISignatureBlob->GetBufferPointer()
+                , pISignatureBlob->GetBufferSize()
+                , IID_PPV_ARGS(&pIRootSignature)));
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     }
 
 
