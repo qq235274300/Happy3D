@@ -1,30 +1,154 @@
 ﻿  WinMain.cpp
-D:\Happy3D\NiceWork\ChiliGame\ChiliGame\WinMain.cpp(288,13): error C2100: illegal indirection
-D:\Happy3D\NiceWork\ChiliGame\ChiliGame\WinMain.cpp(288,13): error C2672: 'IID_PPV_ARGS_Helper': no matching overloaded function found
-  C:\Program Files (x86)\Windows Kits\10\Include\10.0.22621.0\winrt\wrl\client.h(913,8):
-  could be 'void **IID_PPV_ARGS_Helper(Microsoft::WRL::Details::ComPtrRef<T>) noexcept'
-  	D:\Happy3D\NiceWork\ChiliGame\ChiliGame\WinMain.cpp(288,13):
-  	'void **IID_PPV_ARGS_Helper(Microsoft::WRL::Details::ComPtrRef<T>) noexcept': could not deduce template argument for 'Microsoft::WRL::Details::ComPtrRef<T>' from 'D3D12_COMMAND_QUEUE_DESC *'
-  C:\Program Files (x86)\Windows Kits\10\Include\10.0.22621.0\um\combaseapi.h(201,84):
-  or       'void **IID_PPV_ARGS_Helper(T **)'
-  	D:\Happy3D\NiceWork\ChiliGame\ChiliGame\WinMain.cpp(288,13):
-  	'void **IID_PPV_ARGS_Helper(T **)': could not deduce template argument for 'T **' from 'D3D12_COMMAND_QUEUE_DESC *'
-  
-D:\Happy3D\NiceWork\ChiliGame\ChiliGame\WinMain.cpp(288,13): error C2660: 'ID3D12Device::CreateCommandQueue': function does not take 1 arguments
-  C:\Program Files (x86)\Windows Kits\10\Include\10.0.22621.0\um\d3d12.h(8503,43):
-  see declaration of 'ID3D12Device::CreateCommandQueue'
-  D:\Happy3D\NiceWork\ChiliGame\ChiliGame\WinMain.cpp(288,13):
-  while trying to match the argument list '(D3D12_COMMAND_QUEUE_DESC *)'
-  
-D:\Happy3D\NiceWork\ChiliGame\ChiliGame\WinMain.cpp(266,13): warning C4297: 'wWinMain': function assumed not to throw an exception but does
-  D:\Happy3D\NiceWork\ChiliGame\ChiliGame\WinMain.cpp(266,13):
+D:\Happy3D\Happy3D\ChiliGame\ChiliGame\WinMain.cpp(612,9): warning C4297: 'wWinMain': function assumed not to throw an exception but does
+  D:\Happy3D\Happy3D\ChiliGame\ChiliGame\WinMain.cpp(612,9):
   __declspec(nothrow), throw(), noexcept(true), or noexcept was specified on the function
   
-D:\Happy3D\NiceWork\ChiliGame\ChiliGame\WinMain.cpp(269,13): warning C4297: 'wWinMain': function assumed not to throw an exception but does
-  D:\Happy3D\NiceWork\ChiliGame\ChiliGame\WinMain.cpp(269,13):
+D:\Happy3D\Happy3D\ChiliGame\ChiliGame\WinMain.cpp(728,13): warning C4297: 'wWinMain': function assumed not to throw an exception but does
+  D:\Happy3D\Happy3D\ChiliGame\ChiliGame\WinMain.cpp(728,13):
   __declspec(nothrow), throw(), noexcept(true), or noexcept was specified on the function
   
-D:\Happy3D\NiceWork\ChiliGame\ChiliGame\WinMain.cpp(288,13): warning C4297: 'wWinMain': function assumed not to throw an exception but does
-  D:\Happy3D\NiceWork\ChiliGame\ChiliGame\WinMain.cpp(288,13):
+D:\Happy3D\Happy3D\ChiliGame\ChiliGame\WinMain.cpp(731,13): warning C4297: 'wWinMain': function assumed not to throw an exception but does
+  D:\Happy3D\Happy3D\ChiliGame\ChiliGame\WinMain.cpp(731,13):
   __declspec(nothrow), throw(), noexcept(true), or noexcept was specified on the function
   
+D:\Happy3D\Happy3D\ChiliGame\ChiliGame\WinMain.cpp(750,13): warning C4297: 'wWinMain': function assumed not to throw an exception but does
+  D:\Happy3D\Happy3D\ChiliGame\ChiliGame\WinMain.cpp(750,13):
+  __declspec(nothrow), throw(), noexcept(true), or noexcept was specified on the function
+  
+D:\Happy3D\Happy3D\ChiliGame\ChiliGame\WinMain.cpp(755,13): warning C4297: 'wWinMain': function assumed not to throw an exception but does
+  D:\Happy3D\Happy3D\ChiliGame\ChiliGame\WinMain.cpp(755,13):
+  __declspec(nothrow), throw(), noexcept(true), or noexcept was specified on the function
+  
+D:\Happy3D\Happy3D\ChiliGame\ChiliGame\WinMain.cpp(757,13): warning C4297: 'wWinMain': function assumed not to throw an exception but does
+  D:\Happy3D\Happy3D\ChiliGame\ChiliGame\WinMain.cpp(757,13):
+  __declspec(nothrow), throw(), noexcept(true), or noexcept was specified on the function
+  
+D:\Happy3D\Happy3D\ChiliGame\ChiliGame\WinMain.cpp(771,13): warning C4297: 'wWinMain': function assumed not to throw an exception but does
+  D:\Happy3D\Happy3D\ChiliGame\ChiliGame\WinMain.cpp(771,13):
+  __declspec(nothrow), throw(), noexcept(true), or noexcept was specified on the function
+  
+D:\Happy3D\Happy3D\ChiliGame\ChiliGame\WinMain.cpp(783,13): warning C4297: 'wWinMain': function assumed not to throw an exception but does
+  D:\Happy3D\Happy3D\ChiliGame\ChiliGame\WinMain.cpp(783,13):
+  __declspec(nothrow), throw(), noexcept(true), or noexcept was specified on the function
+  
+D:\Happy3D\Happy3D\ChiliGame\ChiliGame\WinMain.cpp(792,13): warning C4297: 'wWinMain': function assumed not to throw an exception but does
+  D:\Happy3D\Happy3D\ChiliGame\ChiliGame\WinMain.cpp(792,13):
+  __declspec(nothrow), throw(), noexcept(true), or noexcept was specified on the function
+  
+D:\Happy3D\Happy3D\ChiliGame\ChiliGame\WinMain.cpp(798,17): warning C4297: 'wWinMain': function assumed not to throw an exception but does
+  D:\Happy3D\Happy3D\ChiliGame\ChiliGame\WinMain.cpp(798,17):
+  __declspec(nothrow), throw(), noexcept(true), or noexcept was specified on the function
+  
+D:\Happy3D\Happy3D\ChiliGame\ChiliGame\WinMain.cpp(804,13): warning C4297: 'wWinMain': function assumed not to throw an exception but does
+  D:\Happy3D\Happy3D\ChiliGame\ChiliGame\WinMain.cpp(804,13):
+  __declspec(nothrow), throw(), noexcept(true), or noexcept was specified on the function
+  
+D:\Happy3D\Happy3D\ChiliGame\ChiliGame\WinMain.cpp(826,13): warning C4297: 'wWinMain': function assumed not to throw an exception but does
+  D:\Happy3D\Happy3D\ChiliGame\ChiliGame\WinMain.cpp(826,13):
+  __declspec(nothrow), throw(), noexcept(true), or noexcept was specified on the function
+  
+D:\Happy3D\Happy3D\ChiliGame\ChiliGame\WinMain.cpp(895,13): warning C4297: 'wWinMain': function assumed not to throw an exception but does
+  D:\Happy3D\Happy3D\ChiliGame\ChiliGame\WinMain.cpp(895,13):
+  __declspec(nothrow), throw(), noexcept(true), or noexcept was specified on the function
+  
+D:\Happy3D\Happy3D\ChiliGame\ChiliGame\WinMain.cpp(899,13): warning C4297: 'wWinMain': function assumed not to throw an exception but does
+  D:\Happy3D\Happy3D\ChiliGame\ChiliGame\WinMain.cpp(899,13):
+  __declspec(nothrow), throw(), noexcept(true), or noexcept was specified on the function
+  
+D:\Happy3D\Happy3D\ChiliGame\ChiliGame\WinMain.cpp(922,13): warning C4297: 'wWinMain': function assumed not to throw an exception but does
+  D:\Happy3D\Happy3D\ChiliGame\ChiliGame\WinMain.cpp(922,13):
+  __declspec(nothrow), throw(), noexcept(true), or noexcept was specified on the function
+  
+D:\Happy3D\Happy3D\ChiliGame\ChiliGame\WinMain.cpp(924,13): warning C4297: 'wWinMain': function assumed not to throw an exception but does
+  D:\Happy3D\Happy3D\ChiliGame\ChiliGame\WinMain.cpp(924,13):
+  __declspec(nothrow), throw(), noexcept(true), or noexcept was specified on the function
+  
+D:\Happy3D\Happy3D\ChiliGame\ChiliGame\WinMain.cpp(960,13): warning C4297: 'wWinMain': function assumed not to throw an exception but does
+  D:\Happy3D\Happy3D\ChiliGame\ChiliGame\WinMain.cpp(960,13):
+  __declspec(nothrow), throw(), noexcept(true), or noexcept was specified on the function
+  
+D:\Happy3D\Happy3D\ChiliGame\ChiliGame\WinMain.cpp(979,13): warning C4297: 'wWinMain': function assumed not to throw an exception but does
+  D:\Happy3D\Happy3D\ChiliGame\ChiliGame\WinMain.cpp(979,13):
+  __declspec(nothrow), throw(), noexcept(true), or noexcept was specified on the function
+  
+D:\Happy3D\Happy3D\ChiliGame\ChiliGame\WinMain.cpp(999,13): warning C4297: 'wWinMain': function assumed not to throw an exception but does
+  D:\Happy3D\Happy3D\ChiliGame\ChiliGame\WinMain.cpp(999,13):
+  __declspec(nothrow), throw(), noexcept(true), or noexcept was specified on the function
+  
+D:\Happy3D\Happy3D\ChiliGame\ChiliGame\WinMain.cpp(1026,13): warning C4297: 'wWinMain': function assumed not to throw an exception but does
+  D:\Happy3D\Happy3D\ChiliGame\ChiliGame\WinMain.cpp(1026,13):
+  __declspec(nothrow), throw(), noexcept(true), or noexcept was specified on the function
+  
+D:\Happy3D\Happy3D\ChiliGame\ChiliGame\WinMain.cpp(1044,13): warning C4297: 'wWinMain': function assumed not to throw an exception but does
+  D:\Happy3D\Happy3D\ChiliGame\ChiliGame\WinMain.cpp(1044,13):
+  __declspec(nothrow), throw(), noexcept(true), or noexcept was specified on the function
+  
+D:\Happy3D\Happy3D\ChiliGame\ChiliGame\WinMain.cpp(1097,13): warning C4297: 'wWinMain': function assumed not to throw an exception but does
+  D:\Happy3D\Happy3D\ChiliGame\ChiliGame\WinMain.cpp(1097,13):
+  __declspec(nothrow), throw(), noexcept(true), or noexcept was specified on the function
+  
+D:\Happy3D\Happy3D\ChiliGame\ChiliGame\WinMain.cpp(1103,13): warning C4297: 'wWinMain': function assumed not to throw an exception but does
+  D:\Happy3D\Happy3D\ChiliGame\ChiliGame\WinMain.cpp(1103,13):
+  __declspec(nothrow), throw(), noexcept(true), or noexcept was specified on the function
+  
+D:\Happy3D\Happy3D\ChiliGame\ChiliGame\WinMain.cpp(1111,17): warning C4297: 'wWinMain': function assumed not to throw an exception but does
+  D:\Happy3D\Happy3D\ChiliGame\ChiliGame\WinMain.cpp(1111,17):
+  __declspec(nothrow), throw(), noexcept(true), or noexcept was specified on the function
+  
+D:\Happy3D\Happy3D\ChiliGame\ChiliGame\WinMain.cpp(1117,13): warning C4297: 'wWinMain': function assumed not to throw an exception but does
+  D:\Happy3D\Happy3D\ChiliGame\ChiliGame\WinMain.cpp(1117,13):
+  __declspec(nothrow), throw(), noexcept(true), or noexcept was specified on the function
+  
+D:\Happy3D\Happy3D\ChiliGame\ChiliGame\WinMain.cpp(1119,13): warning C4297: 'wWinMain': function assumed not to throw an exception but does
+  D:\Happy3D\Happy3D\ChiliGame\ChiliGame\WinMain.cpp(1119,13):
+  __declspec(nothrow), throw(), noexcept(true), or noexcept was specified on the function
+  
+D:\Happy3D\Happy3D\ChiliGame\ChiliGame\WinMain.cpp(1206,13): warning C4297: 'wWinMain': function assumed not to throw an exception but does
+  D:\Happy3D\Happy3D\ChiliGame\ChiliGame\WinMain.cpp(1206,13):
+  __declspec(nothrow), throw(), noexcept(true), or noexcept was specified on the function
+  
+D:\Happy3D\Happy3D\ChiliGame\ChiliGame\WinMain.cpp(1216,13): warning C4297: 'wWinMain': function assumed not to throw an exception but does
+  D:\Happy3D\Happy3D\ChiliGame\ChiliGame\WinMain.cpp(1216,13):
+  __declspec(nothrow), throw(), noexcept(true), or noexcept was specified on the function
+  
+D:\Happy3D\Happy3D\ChiliGame\ChiliGame\WinMain.cpp(1248,13): warning C4297: 'wWinMain': function assumed not to throw an exception but does
+  D:\Happy3D\Happy3D\ChiliGame\ChiliGame\WinMain.cpp(1248,13):
+  __declspec(nothrow), throw(), noexcept(true), or noexcept was specified on the function
+  
+D:\Happy3D\Happy3D\ChiliGame\ChiliGame\WinMain.cpp(1258,13): warning C4297: 'wWinMain': function assumed not to throw an exception but does
+  D:\Happy3D\Happy3D\ChiliGame\ChiliGame\WinMain.cpp(1258,13):
+  __declspec(nothrow), throw(), noexcept(true), or noexcept was specified on the function
+  
+D:\Happy3D\Happy3D\ChiliGame\ChiliGame\WinMain.cpp(1291,13): warning C4297: 'wWinMain': function assumed not to throw an exception but does
+  D:\Happy3D\Happy3D\ChiliGame\ChiliGame\WinMain.cpp(1291,13):
+  __declspec(nothrow), throw(), noexcept(true), or noexcept was specified on the function
+  
+D:\Happy3D\Happy3D\ChiliGame\ChiliGame\WinMain.cpp(1300,13): warning C4297: 'wWinMain': function assumed not to throw an exception but does
+  D:\Happy3D\Happy3D\ChiliGame\ChiliGame\WinMain.cpp(1300,13):
+  __declspec(nothrow), throw(), noexcept(true), or noexcept was specified on the function
+  
+D:\Happy3D\Happy3D\ChiliGame\ChiliGame\WinMain.cpp(1397,17): warning C4297: 'wWinMain': function assumed not to throw an exception but does
+  D:\Happy3D\Happy3D\ChiliGame\ChiliGame\WinMain.cpp(1397,17):
+  __declspec(nothrow), throw(), noexcept(true), or noexcept was specified on the function
+  
+D:\Happy3D\Happy3D\ChiliGame\ChiliGame\WinMain.cpp(1399,17): warning C4297: 'wWinMain': function assumed not to throw an exception but does
+  D:\Happy3D\Happy3D\ChiliGame\ChiliGame\WinMain.cpp(1399,17):
+  __declspec(nothrow), throw(), noexcept(true), or noexcept was specified on the function
+  
+D:\Happy3D\Happy3D\ChiliGame\ChiliGame\WinMain.cpp(1457,17): warning C4297: 'wWinMain': function assumed not to throw an exception but does
+  D:\Happy3D\Happy3D\ChiliGame\ChiliGame\WinMain.cpp(1457,17):
+  __declspec(nothrow), throw(), noexcept(true), or noexcept was specified on the function
+  
+D:\Happy3D\Happy3D\ChiliGame\ChiliGame\WinMain.cpp(1469,17): warning C4297: 'wWinMain': function assumed not to throw an exception but does
+  D:\Happy3D\Happy3D\ChiliGame\ChiliGame\WinMain.cpp(1469,17):
+  __declspec(nothrow), throw(), noexcept(true), or noexcept was specified on the function
+  
+D:\Happy3D\Happy3D\ChiliGame\ChiliGame\WinMain.cpp(1478,17): warning C4297: 'wWinMain': function assumed not to throw an exception but does
+  D:\Happy3D\Happy3D\ChiliGame\ChiliGame\WinMain.cpp(1478,17):
+  __declspec(nothrow), throw(), noexcept(true), or noexcept was specified on the function
+  
+D:\Happy3D\Happy3D\ChiliGame\ChiliGame\WinMain.cpp(1480,17): warning C4297: 'wWinMain': function assumed not to throw an exception but does
+  D:\Happy3D\Happy3D\ChiliGame\ChiliGame\WinMain.cpp(1480,17):
+  __declspec(nothrow), throw(), noexcept(true), or noexcept was specified on the function
+  
+  ChiliGame.vcxproj -> D:\Happy3D\Happy3D\ChiliGame\x64\Debug\ChiliGame.exe

@@ -1,9 +1,0 @@
-﻿  WinMain.cpp
-D:\Happy3D\NiceWork\ChiliGame\ChiliGame\WinMain.cpp(168,26): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-D:\Happy3D\NiceWork\ChiliGame\ChiliGame\WinMain.cpp(168,18): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-  Generating code
-  7 of 7 functions (100.0%) were compiled.
-    6 functions were new in current compilation
-    0 functions had inline decision re-evaluated but remain unchanged
-  Finished generating code
-  ChiliGame.vcxproj -> D:\Happy3D\NiceWork\ChiliGame\x64\Release\ChiliGame.exe
